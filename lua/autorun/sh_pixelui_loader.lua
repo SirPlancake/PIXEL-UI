@@ -19,6 +19,15 @@ PIXEL = PIXEL or {}
 PIXEL.UI = PIXEL.UI or {}
 PIXEL.UI.Version = "1.4.1"
 
+function PIXEL.Print(...)
+	MsgC(
+		Color(236, 240, 241), "(",
+		Color(54, 174, 244), "PIXEL_UI",
+		Color(236, 240, 241), ") ",
+		Color(236, 240, 241), ...
+	) Msg("\n")
+end
+
 function PIXEL.LoadDirectory(path)
 	local files, folders = file.Find(path .. "/*", "LUA")
 
@@ -49,25 +58,25 @@ function PIXEL.LoadDirectoryRecursive(basePath)
 	end
 end
 
+PIXEL.Print("Loading...")
 PIXEL.LoadDirectoryRecursive("pixelui")
-
 hook.Run("PIXEL.UI.FullyLoaded")
+PIXEL.Print("Loaded!")
 
-if CLIENT then return end
-
-resource.AddWorkshop("2468112758")
-
-hook.Add("Think", "PIXEL.UI.VersionChecker", function()
-	hook.Remove("Think", "PIXEL.UI.VersionChecker")
-
-	http.Fetch("https://raw.githubusercontent.com/TomDotBat/pixel-ui/master/VERSION", function(body)
-		if PIXEL.UI.Version ~= string.Trim(body) then
-			local red = Color(192, 27, 27)
-
-			MsgC(red, "[PIXEL UI] There is an update available, please download it at: https://github.com/TomDotBat/pixel-ui/releases\n")
-			MsgC(red, "\nYour version: " .. PIXEL.UI.Version .. "\n")
-			MsgC(red, "New  version: " .. body .. "\n")
-			return
-		end
-	end)
-end)
+if (SERVER) then
+	resource.AddWorkshop("2468112758")
+	if (PIXEL.CheckForUpdates) then 
+		hook.Add("Think", "PIXEL.UI.VersionChecker", function()
+			hook.Remove("Think", "PIXEL.UI.VersionChecker")
+			http.Fetch("https://raw.githubusercontent.com/SirPlancake/PIXEL-UI/master/VERSION", function(Body)
+				if (PIXEL.UI.Version ~= string.Trim(Body)) then
+					PIXEL.Print("------------------------------------------------------------------")
+					PIXEL.Print(string.format("There is an update available. (%s -> %s)", PIXEL.UI.Version, Body))
+					PIXEL.Print("You can download it here: https://github.com/SirPlancake/PIXEL-UI")
+					PIXEL.Print("------------------------------------------------------------------")
+					return
+				end
+			end)
+		end)
+	end
+end

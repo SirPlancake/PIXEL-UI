@@ -16,6 +16,11 @@
 --]]
 
 --[[
+    Should SirPlancake's fork of PIXEL UI check for updates?
+]]
+PIXEL.CheckForUpdates = true
+
+--[[
     Should we override the default derma popups for the PIXEL UI reskins?
     0 = No - forced off.
     1 = No - but users can opt in via convar (pixel_ui_override_popups).
