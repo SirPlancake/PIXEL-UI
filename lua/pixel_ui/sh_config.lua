@@ -54,7 +54,7 @@ PIXEL.Colors = {
     Scroller = Color(61, 61, 61),
 
     PrimaryText = Color(255, 255, 255),
-    SecondaryText = Color(220, 220, 220),
+    SecondaryText = Color(200, 200, 200),
     DisabledText = Color(169, 169, 169),
 
     Primary = Color(47, 128, 200),
