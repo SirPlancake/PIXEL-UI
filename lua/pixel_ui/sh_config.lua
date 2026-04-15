@@ -32,7 +32,7 @@ PIXEL.UseProxy = true
     2 = Yes - but users can opt out via convar.
     3 = Yes - forced on.
 ]]
-PIXEL.OverrideDermaMenus = 0
+PIXEL.OverrideDermaMenus = 3
 
 --[[
     The Image URL of the progress image you want to appear when image content is loading.
