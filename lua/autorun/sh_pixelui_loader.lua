@@ -22,7 +22,7 @@ PIXEL.UI.Version = "1.4.1"
 function PIXEL.Print(...)
 	MsgC(
 		Color(236, 240, 241), "(",
-		Color(54, 174, 244), "PIXEL_UI",
+		Color(54, 114, 244), "PIXEL_UI",
 		Color(236, 240, 241), ") ",
 		Color(236, 240, 241), ...
 	) Msg("\n")
