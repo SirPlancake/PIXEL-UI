@@ -20,6 +20,7 @@ local PANEL = {}
 AccessorFunc(PANEL, "Text", "Text", FORCE_STRING)
 AccessorFunc(PANEL, "TextAlign", "TextAlign", FORCE_NUMBER)
 AccessorFunc(PANEL, "TextSpacing", "TextSpacing", FORCE_NUMBER)
+AccessorFunc(PANEL, "TextColor", "TextColor", FORCE_COLOR)
 AccessorFunc(PANEL, "Font", "Font", FORCE_STRING)
 
 PIXEL.RegisterFont("UI.TextButton", "Roboto Medium", 20)
@@ -40,6 +41,7 @@ end
 
 function PANEL:PaintExtra(w, h)
     local textAlign = self:GetTextAlign()
+    local textColor = self:GetTextColor()
     local textX = (textAlign == TEXT_ALIGN_CENTER and w / 2) or (textAlign == TEXT_ALIGN_RIGHT and w - self:GetTextSpacing()) or self:GetTextSpacing()
 
     if not self:IsEnabled() then
@@ -47,7 +49,11 @@ function PANEL:PaintExtra(w, h)
         return
     end
 
-    PIXEL.DrawSimpleText(self:GetText(), self:GetFont(), textX, h / 2, PIXEL.Colors.PrimaryText, textAlign, TEXT_ALIGN_CENTER)
+    if textColor then
+        PIXEL.DrawSimpleText(self:GetText(), self:GetFont(), textX, h / 2, textColor, textAlign, TEXT_ALIGN_CENTER)
+    else
+        PIXEL.DrawSimpleText(self:GetText(), self:GetFont(), textX, h / 2, PIXEL.Colors.PrimaryText, textAlign, TEXT_ALIGN_CENTER) 
+    end
 end
 
 vgui.Register("PIXEL.TextButton", PANEL, "PIXEL.Button")
