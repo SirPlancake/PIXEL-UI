@@ -31,7 +31,7 @@ function PANEL:GetImgurID()
 	return self:GetImageURL():match("https://i.imgur.com/(.-).png")
 end
 
-PIXEL.RegisterFont("SidebarItem", "Open Sans Bold", 19)
+PIXEL.RegisterFont("SidebarItem", "Roboto Medium", 19)
 
 function PANEL:Init()
 	self:SetName("N/A")

@@ -26,7 +26,7 @@ AccessorFunc(PANEL, "m_txtPlaceholder", "PlaceholderText", FORCE_STRING)
 
 Derma_Install_Convar_Functions(PANEL)
 
-PIXEL.RegisterFont("UI.TextEntry", "Open Sans SemiBold", 18)
+PIXEL.RegisterFont("UI.TextEntry", "Roboto Medium", 18)
 
 function PANEL:Init()
     self:SetHistoryEnabled(false)

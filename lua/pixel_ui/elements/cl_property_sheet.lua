@@ -21,7 +21,7 @@ AccessorFunc(PANEL, "m_sText", "Text")
 AccessorFunc(PANEL, "m_pPropertySheet", "PropertySheet")
 AccessorFunc(PANEL, "m_pPanel", "Panel")
 
-PIXEL.RegisterFont("UI.Tab", "Open Sans Bold", 16)
+PIXEL.RegisterFont("UI.Tab", "Roboto Medium", 16)
 
 function PANEL:Init()
 	self.BackgroundCol = PIXEL.OffsetColor(PIXEL.Colors.Background, -4)

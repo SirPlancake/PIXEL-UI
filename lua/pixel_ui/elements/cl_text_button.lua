@@ -22,7 +22,7 @@ AccessorFunc(PANEL, "TextAlign", "TextAlign", FORCE_NUMBER)
 AccessorFunc(PANEL, "TextSpacing", "TextSpacing", FORCE_NUMBER)
 AccessorFunc(PANEL, "Font", "Font", FORCE_STRING)
 
-PIXEL.RegisterFont("UI.TextButton", "Open Sans SemiBold", 20)
+PIXEL.RegisterFont("UI.TextButton", "Roboto Medium", 20)
 
 function PANEL:Init()
     self:SetText("Button")

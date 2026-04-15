@@ -37,7 +37,7 @@ function PANEL:GetImgurID()
 	return self:GetImageURL():match("https://i.imgur.com/(.-).png")
 end
 
-PIXEL.RegisterFont("UI.FrameTitle", "Open Sans Bold", 22)
+PIXEL.RegisterFont("UI.FrameTitle", "Roboto Medium", 22)
 
 function PANEL:Init()
 	self.CloseButton = vgui.Create("PIXEL.ImageButton", self)

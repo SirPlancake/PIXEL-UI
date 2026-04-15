@@ -26,7 +26,7 @@ AccessorFunc(PANEL, "AutoHeight", "AutoHeight", FORCE_BOOL)
 AccessorFunc(PANEL, "AutoWidth", "AutoWidth", FORCE_BOOL)
 AccessorFunc(PANEL, "AutoWrap", "AutoWrap", FORCE_BOOL)
 
-PIXEL.RegisterFont("UI.Label", "Open Sans SemiBold", 14)
+PIXEL.RegisterFont("UI.Label", "Roboto Medium", 14)
 
 function PANEL:Init()
     self:SetText("Label")
