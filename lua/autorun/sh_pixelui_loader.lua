@@ -59,7 +59,7 @@ function PIXEL.LoadDirectoryRecursive(basePath)
 end
 
 PIXEL.Print("Loading...")
-PIXEL.LoadDirectoryRecursive("pixelui")
+PIXEL.LoadDirectoryRecursive("pixel_ui")
 hook.Run("PIXEL.UI.FullyLoaded")
 PIXEL.Print("Loaded!")
 
