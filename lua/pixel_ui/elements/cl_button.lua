@@ -19,10 +19,12 @@ local PANEL = {}
 
 AccessorFunc(PANEL, "IsToggle", "IsToggle", FORCE_BOOL)
 AccessorFunc(PANEL, "Toggle", "Toggle", FORCE_BOOL)
+AccessorFunc(PANEL, "DrawOutline", "DrawOutline", FORCE_BOOL)
 
 function PANEL:Init()
     self:SetIsToggle(false)
     self:SetToggle(false)
+    self:SetDrawOutline(true)
     self:SetMouseInputEnabled(true)
 
     self:SetCursor("hand")
@@ -30,19 +32,16 @@ function PANEL:Init()
     local btnSize = PIXEL.Scale(30)
     self:SetSize(btnSize, btnSize)
 
-    self.NormalCol = PIXEL.CopyColor(PIXEL.Colors.Primary)
-    self.HoverCol = PIXEL.OffsetColor(self.NormalCol, -15)
-    self.ClickedCol = PIXEL.OffsetColor(self.NormalCol, 15)
-    self.DisabledCol = PIXEL.CopyColor(PIXEL.Colors.Disabled)
-
-    self.BackgroundCol = self.NormalCol
+    self.BackgroundCol = PIXEL.CopyColor(PIXEL.Colors.ButtonBackground)
+    self.OutlineCol = PIXEL.CopyColor(PIXEL.Colors.ButtonOutline)
+    self.edgeColor = PIXEL.Colors.ButtonOutline
 end
 
-function PANEL:DoToggle(...)
+function PANEL:DoToggle()
     if not self:GetIsToggle() then return end
 
     self:SetToggle(not self:GetToggle())
-    self:OnToggled(self:GetToggle(), ...)
+    self:OnToggled(self:GetToggle())
 end
 
 local localPly
@@ -68,7 +67,7 @@ function PANEL:OnMouseReleased(mouseCode)
     self:MouseCapture(false)
 
     if not self:IsEnabled() then return end
-    if not self.Depressed and dragndrop.m_DraggingMain ~= self then return end
+    if not self.Depressed and dragndrop.m_DraggingMain != self then return end
 
     if self.Depressed then
         self.Depressed = nil
@@ -102,25 +101,38 @@ function PANEL:OnMouseReleased(mouseCode)
 end
 
 function PANEL:PaintExtra(w, h) end
-
+function PANEL:SetEdgeColor(color)
+    self.edgeColor = color
+end
 function PANEL:Paint(w, h)
     if not self:IsEnabled() then
-        PIXEL.DrawRoundedBox(PIXEL.Scale(4), 0, 0, w, h, self.DisabledCol)
+        PIXEL.DrawRoundedBox(PIXEL.Scale(4), 0, 0, w, h, PIXEL.Colors.ButtonDisabled)
         self:PaintExtra(w, h)
         return
     end
 
-    local bgCol = self.NormalCol
+    local bgCol = PIXEL.Colors.ButtonBackground
+    local outlineCol = self.edgeColor
 
-    if self:IsDown() or self:GetToggle() then
-        bgCol = self.ClickedCol
-    elseif self:IsHovered() then
-        bgCol = self.HoverCol
+    if self:IsHovered() then
+        bgCol = PIXEL.Colors.ButtonBackgroundHover
+        outlineCol = PIXEL.Colors.ButtonOutlineHover
     end
 
-    self.BackgroundCol = PIXEL.LerpColor(FrameTime() * 12, self.BackgroundCol, bgCol)
+    if self:IsDown() or self:GetToggle() then
+        bgCol = PIXEL.Colors.ButtonBackgroundClicked
+        outlineCol = PIXEL.Colors.ButtonOutlineClicked
+    end
+
+    local animTime = FrameTime() * 12
+    self.BackgroundCol = PIXEL.LerpColor(animTime, self.BackgroundCol, bgCol)
+    self.OutlineCol = PIXEL.LerpColor(animTime, self.OutlineCol, outlineCol)
 
     PIXEL.DrawRoundedBox(PIXEL.Scale(4), 0, 0, w, h, self.BackgroundCol)
+
+    if self:GetDrawOutline() then
+        PIXEL.DrawOutlinedRoundedBox(PIXEL.Scale(4), 0, 0, w, h, self.OutlineCol, PIXEL.Scale(1))
+    end
 
     self:PaintExtra(w, h)
 end
@@ -129,7 +141,7 @@ function PANEL:IsDown() return self.Depressed end
 function PANEL:OnPressed(mouseCode) end
 function PANEL:OnReleased(mouseCode) end
 function PANEL:OnToggled(enabled) end
-function PANEL:DoClick(...) self:DoToggle(...) end
+function PANEL:DoClick() self:DoToggle() end
 function PANEL:DoRightClick() end
 function PANEL:DoMiddleClick() end
 

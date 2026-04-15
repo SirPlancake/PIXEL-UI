@@ -49,12 +49,13 @@ PIXEL.DownloadPath = "pixel_ui/images/"
 ]]
 PIXEL.Colors = {
     Background = Color(22, 22, 22),
+    Container = Color(25, 25, 25),
     Header = Color(28, 28, 28),
     Scroller = Color(61, 61, 61),
 
     PrimaryText = Color(255, 255, 255),
     SecondaryText = Color(220, 220, 220),
-    DisabledText = Color(40, 40, 40),
+    DisabledText = Color(169, 169, 169),
 
     Primary = Color(47, 128, 200),
     Disabled = Color(180, 180, 180),
@@ -65,5 +66,17 @@ PIXEL.Colors = {
     Silver = Color(192, 192, 192),
     Bronze = Color(145, 94, 49),
 
-    Transparent = Color(0, 0, 0, 0)
+    Transparent = Color(0, 0, 0, 0),
+
+    ButtonBackground = Color(0, 0, 0, 0),
+    ButtonBackgroundHover = Color(0, 0, 0, 0),
+    ButtonBackgroundClicked = Color(90, 93, 103, 51),
+    ButtonOutline = Color(61, 63, 70),
+    ButtonOutlineHover = Color(90, 93, 103),
+    ButtonOutlineClicked = Color(90, 93, 103),
+    ButtonText = Color(135, 135, 135),
+    ButtonTextHover = Color(228, 228, 228),
+    ButtonTextClicked = Color(255, 255, 255),
+    ButtonDisabled = Color(43, 43, 48),
+    ButtonTextDisabled = Color(149, 149, 151),
 }

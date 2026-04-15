@@ -46,6 +46,7 @@ function PANEL:Init()
 	self.CloseButton:SetHoverColor(PIXEL.Colors.Negative)
 	self.CloseButton:SetClickColor(PIXEL.Colors.Negative)
 	self.CloseButton:SetDisabledColor(PIXEL.Colors.DisabledText)
+	self.CloseButton:SetDrawOutline(false)
 
 	self.CloseButton.DoClick = function(s)
 		self:Close()
