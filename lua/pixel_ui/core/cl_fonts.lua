@@ -25,7 +25,7 @@ do
     function PIXEL.RegisterFontUnscaled(name, font, size, weight)
         weight = weight or 500
 
-        local identifier = font .. size .. ":" .. weight
+        local identifier = name
 
         local fontName = "PIXEL:" .. identifier
         registeredFonts[name] = fontName
