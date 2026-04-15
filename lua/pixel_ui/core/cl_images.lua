@@ -18,8 +18,6 @@
 local materials = {}
 local queue = {}
 
-local useProxy = false
-
 file.CreateDir(PIXEL.DownloadPath)
 
 local function endsWithExtension(str)
@@ -36,7 +34,7 @@ local function processQueue()
     if queue[1] then
         local url, filePath, matSettings, callback = unpack(queue[1])
 
-        http.Fetch((useProxy and ("https://proxy.duckduckgo.com/iu/?u=" .. url)) or url,
+        http.Fetch((PIXEL.UseProxy and ("https://proxy.duckduckgo.com/iu/?u=" .. url)) or url,
             function(body, len, headers, code)
                 if len > 2097152 or code ~= 200 then
                     materials[filePath] = Material("nil")
@@ -53,11 +51,11 @@ local function processQueue()
                 callback(materials[filePath])
             end,
             function(error)
-                if useProxy then
+                if PIXEL.UseProxy then
                     materials[filePath] = Material("nil")
                     callback(materials[filePath])
                 else
-                    useProxy = true
+                    PIXEL.UseProxy = true
                     processQueue()
                 end
             end

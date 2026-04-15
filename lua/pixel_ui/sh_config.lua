@@ -21,6 +21,11 @@
 PIXEL.CheckForUpdates = true
 
 --[[
+    Should the web proxy be enabled? This fixes imgur images for United Kingdom etc.
+]]
+PIXEL.UseProxy = true
+
+--[[
     Should we override the default derma popups for the PIXEL UI reskins?
     0 = No - forced off.
     1 = No - but users can opt in via convar (pixel_ui_override_popups).
@@ -37,7 +42,7 @@ PIXEL.ProgressImageURL = "https://pixel-cdn.lythium.dev/i/47qh6kjjh"
 --[[
     The location at which downloaded assets should be stored (relative to the data folder).
 ]]
-PIXEL.DownloadPath = "pixel/images/"
+PIXEL.DownloadPath = "pixel_ui/images/"
 
 --[[
     Colour definitions.
