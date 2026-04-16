@@ -121,10 +121,10 @@ function PANEL:Init()
 	self.Scroller.LayoutContent = function(s, w, h)
 		local spacing = PIXEL.Scale(8)
 		local height = PIXEL.Scale(35)
-		for k,v in pairs(self.Items) do
-			v:SetTall(height)
-			v:Dock(TOP)
-			v:DockMargin(0, 0, 0, spacing)
+		for k,v in SortedPairsByMemberValue(self.Items, "Order") do
+    		v:SetTall(height)
+    		v:Dock(TOP)
+    		v:DockMargin(0, 0, 0, spacing)
 		end
 	end
 
@@ -138,7 +138,7 @@ end
 function PANEL:AddItem(id, name, imageURL, doClick, order)
 	local btn = vgui.Create("PIXEL.SidebarItem", self.Scroller)
 
-	btn:SetZPos(order or table.Count(self.Items) + 1)
+	btn.Order = order or table.Count(self.Items) + 1
 	btn:SetName(name)
 	if imageURL then
 		local imgurMatch = (imageURL or ""):match("^[a-zA-Z0-9]+$")
@@ -159,6 +159,28 @@ function PANEL:AddItem(id, name, imageURL, doClick, order)
 	return btn
 end
 
+function PANEL:AddDivider(name, color)
+    local btn = vgui.Create("Panel", self.Scroller)
+
+    btn.Order = table.Count(self.Items) + 1
+    btn:SetName(name)
+    if imgurID then btn:SetImgurID(imgurID) end
+    btn.Function = function() end
+
+    btn.DoClick = function(s)
+        self:SelectItem(id)
+    end
+    local textCol = PIXEL.CopyColor(Color(255, 255, 255))
+    btn.col = color or Color(25,25,25)
+    btn.Paint = function(s,w,h)
+        PIXEL.DrawOutlinedRoundedBox(PIXEL.Scale(4), 0, 0, w, h, s.col, PIXEL.Scale(1)) 
+        PIXEL.DrawSimpleText(name, "PIXEL.SidebarItem", w/2, h / 2, textCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+    self.Items[name .. "selector"] = btn
+
+    return btn
+end
+
 function PANEL:RemoveItem(id)
 	local item = self.Items[id]
 	if not item then return end
@@ -172,17 +194,28 @@ end
 
 function PANEL:SelectItem(id)
 	local item = self.Items[id]
-	if not item then return end
+    if not item then return end
 
-	if self.SelectedItem and self.SelectedItem == id then return end
-	self.SelectedItem = id
+    if self.SelectedItem and self.SelectedItem == id then return end
+    self.SelectedItem = id
 
-	for k,v in pairs(self.Items) do
-		v:SetToggle(false)
-	end
+    for k,v in pairs(self.Items) do
+        if v.SetToggle then
+            v:SetToggle(false)
+        end
+    end
 
-	item:SetToggle(true)
-	item.Function(item)
+    item:SetToggle(true)
+    item.Function(item)
+end
+
+function PANEL:ClearSelection()
+    if not self.SelectedItem then return end
+    local selected = self.Items[self.SelectedItem]
+    if IsValid(selected) then
+        selected:SetToggle(false)
+    end
+    self.SelectedItem = nil
 end
 
 function PANEL:PerformLayout(w, h)
