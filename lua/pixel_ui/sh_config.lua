@@ -49,7 +49,7 @@ PIXEL.DownloadPath = "pixel_ui/images/"
 ]]
 PIXEL.Colors = {
     Background = Color(22, 22, 22),
-    Container = Color(25, 25, 25),
+    Container = Color(32, 32, 32),
     Header = Color(28, 28, 28),
     Scroller = Color(61, 61, 61),
 
