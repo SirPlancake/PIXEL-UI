@@ -17,7 +17,7 @@
 
 PIXEL = PIXEL or {}
 PIXEL.UI = PIXEL.UI or {}
-PIXEL.UI.Version = "1.0.1"
+PIXEL.UI.Version = "1.0.2"
 
 function PIXEL.Print(...)
 	MsgC(
