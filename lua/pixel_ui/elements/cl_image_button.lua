@@ -25,13 +25,13 @@ AccessorFunc(PANEL, "ClickColor", "ClickColor")
 AccessorFunc(PANEL, "DisabledColor", "DisabledColor")
 
 function PANEL:Init()
-    self.ImageCol = PIXEL.CopyColor(color_white)
+    self.ImageCol = PIXEL.CopyColor(PIXEL.Colors.PrimaryText)
     self:SetImageURL(PIXEL.ProgressImageURL)
 
-    self:SetNormalColor(color_white)
-    self:SetHoverColor(color_white)
-    self:SetClickColor(color_white)
-    self:SetDisabledColor(color_white)
+    self:SetNormalColor(PIXEL.Colors.PrimaryText)
+    self:SetHoverColor(PIXEL.Colors.SecondaryText)
+    self:SetClickColor(PIXEL.Colors.PrimaryText)
+    self:SetDisabledColor(PIXEL.Colors.Disabled)
 
     self:SetImageSize(1)
 end
