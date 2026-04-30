@@ -15,90 +15,44 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --]]
 
-PIXEL.RegisterFontUnscaled("UI.Overhead", "Roboto Medium", 100)
+PIXEL.RegisterFont("UI.OverheadTitle", "Roboto Medium", 60, 300)
+PIXEL.RegisterFont("UI.OverheadDescription", "Roboto Medium", 50, 200)
 
-local localPly
-local function checkDistance(ent)
-    if not IsValid(localPly) then localPly = LocalPlayer() end
-    if localPly:GetPos():DistToSqr(ent:GetPos()) > 200000 then return true end
-end
+function PIXEL.DrawOverhead(ent, title, description, imgurID)
+    local entpos = ent:GetPos()
+    local ply = LocalPlayer()
 
-local disableClipping = DisableClipping
-local start3d2d, end3d2d = cam.Start3D2D, cam.End3D2D
-local Icon = icon
+    if (ply:GetPos():DistToSqr(entpos) >= 150 * 500) then return end
 
-local function drawOverhead(ent, pos, text, ang, scale)
-    if ang then
-        ang = ent:LocalToWorldAngles(ang)
-    else
-        ang = (pos - localPly:GetPos()):Angle()
-        ang:SetUnpacked(0, ang[2] - 90, 90)
-    end
+    local pos = entpos + Vector(0, 0, 83)
+    local ang = (ply:EyePos() - pos):Angle()
 
-    PIXEL.SetFont("UI.Overhead")
-    local w, h = PIXEL.GetTextSize(text)
-    w = w + 40
-    h = h + 6
+    ang.p = 0
+    ang:RotateAroundAxis(ang:Right(), 90)
+    ang:RotateAroundAxis(ang:Up(), 90)
+    ang:RotateAroundAxis(ang:Forward(), 180)
 
-    local x, y = -(w * .5), -h
+    cam.Start3D2D(pos, ang, 0.04)
+        local hasIcon = imgurID ~= nil
 
-    local oldClipping = disableClipping(true)
+        local titleWidth = PIXEL.GetTextSize(title, "UI.OverheadTitle")
+        local descriptionWidth = PIXEL.GetTextSize(description, "UI.OverheadDescription")
 
-    start3d2d(pos, ang, scale or 0.05)
-    if not Icon then
-        PIXEL.DrawRoundedBox(12, x, y, w, h, PIXEL.Colors.Primary)
-        PIXEL.DrawText(text, "UI.Overhead", 0, y + 1, PIXEL.Colors.PrimaryText, TEXT_ALIGN_CENTER)
-    else
-        x = x - 40
-        PIXEL.DrawRoundedBox(12, x, y, h, h, PIXEL.Colors.Primary)
-        PIXEL.DrawRoundedBoxEx(12, x + (h - 12), y + h - 20, w + 15, 20, PIXEL.Colors.Primary, false, false, false, true)
-        PIXEL.DrawText(text, "UI.Overhead", x + h + 15, y + 8, PIXEL.Colors.PrimaryText)
-        PIXEL.DrawImage(x + 10, y + 10, h - 20, h - 20, Icon, color_white)
-    end
-    end3d2d()
+        local iconWidth = hasIcon and (PIXEL.Scale(72)) or 0
+        local topWidth = iconWidth + titleWidth
+        local width = math.max(topWidth, descriptionWidth) + PIXEL.Scale(50) * 2
+        local startX = -width / 2
 
-    disableClipping(oldClipping)
-end
+        PIXEL.DrawRoundedBoxEx(PIXEL.Scale(30), startX, 98, width, 100, Color(0, 0, 0, 150), false, false, true, true)
+        PIXEL.DrawRoundedBoxEx(PIXEL.Scale(30), startX, 0, width, 100, Color(0, 0, 0, 200), true, true, false, false)
 
-local entOffset = 2
-function PIXEL.DrawEntOverhead(ent, text, angleOverride, posOverride, scaleOverride)
-    if checkDistance(ent) then return end
+        local contentStart = startX + (width - topWidth) / 2
 
-    if posOverride then
-        drawOverhead(ent, ent:LocalToWorld(posOverride), text, angleOverride, scaleOverride)
-        return
-    end
-
-    local pos = ent:OBBMaxs()
-    pos:SetUnpacked(0, 0, pos[3] + entOffset)
-
-    drawOverhead(ent, ent:LocalToWorld(pos), text, angleOverride, scaleOverride)
-end
-
-local eyeOffset = Vector(0, 0, 7)
-local fallbackOffset = Vector(0, 0, 73)
-function PIXEL.DrawNPCOverhead(ent, text, angleOverride, offsetOverride, scaleOverride)
-    if checkDistance(ent) then return end
-
-    local eyeId = ent:LookupAttachment("eyes")
-    if eyeId then
-        local eyes = ent:GetAttachment(eyeId)
-        if eyes then
-            eyes.Pos:Add(offsetOverride or eyeOffset)
-            drawOverhead(ent, eyes.Pos, text, angleOverride, scaleOverride)
-            return
+        if hasIcon then
+            PIXEL.DrawImgur(contentStart, PIXEL.Scale(25), PIXEL.Scale(48), PIXEL.Scale(48), imgurID, color_white)
         end
-    end
 
-    drawOverhead(ent, ent:GetPos() + fallbackOffset, text, angleOverride, scaleOverride)
-end
-
-function PIXEL.EnableIconOverheads(new)
-    local oldIcon = Icon
-    local imgurMatch = (new or ""):match("^[a-zA-Z0-9]+$")
-    if imgurMatch then
-        new = "https://i.imgur.com/" .. new .. ".png"
-    end
-    Icon = new
-    return oldIcon
+        PIXEL.DrawSimpleText(title, "UI.OverheadTitle", contentStart + iconWidth, PIXEL.Scale(50), PIXEL.Colors.PrimaryText, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        PIXEL.DrawSimpleText(description, "UI.OverheadDescription", 0, PIXEL.Scale(145), PIXEL.Colors.SecondaryText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    cam.End3D2D()
 end
